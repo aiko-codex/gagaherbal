@@ -18,8 +18,8 @@ export default function HeroSlider() {
             subtitle: "Premium Herbal Remedies for a Healthier You",
             buttonText: "Shop Now",
             link: "/shop",
-            bgClass: "bg-stone-100", // Placeholder color
-            image: null, // To be replaced with actual image
+            bgClass: "bg-background",
+            image: "/hero/hero_bg_1.png",
         },
         {
             id: 2,
@@ -27,8 +27,8 @@ export default function HeroSlider() {
             subtitle: "Sourced Ethically from Best Farms",
             buttonText: "Learn More",
             link: "/about",
-            bgClass: "bg-green-50", // Placeholder color
-            image: null,
+            bgClass: "bg-background",
+            image: "/hero/hero_bg_2.png",
         },
         {
             id: 3,
@@ -36,8 +36,8 @@ export default function HeroSlider() {
             subtitle: "Ancient Wisdom, Modern Science",
             buttonText: "View Collection",
             link: "/shop",
-            bgClass: "bg-amber-50", // Placeholder color
-            image: null,
+            bgClass: "bg-background",
+            image: "/hero/hero_bg_3.png",
         },
     ];
 
@@ -58,23 +58,34 @@ export default function HeroSlider() {
                             key={slide.id}
                             className={`flex-[0_0_100%] min-w-0 h-[500px] md:h-[600px] relative ${slide.bgClass} flex items-center justify-center`}
                         >
-                            <div className="container px-4 md:px-6 text-center z-10">
-                                <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold text-primary mb-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                            {/* Background Image */}
+                            {slide.image && (
+                                <div className="absolute inset-0 z-0">
+                                    <img
+                                        src={slide.image}
+                                        alt={slide.title}
+                                        className="w-full h-full object-cover"
+                                    />
+                                    {/* Dark Overlay for Text Readability */}
+                                    <div className="absolute inset-0 bg-black/40" />
+                                </div>
+                            )}
+
+                            <div className="container px-4 md:px-6 text-center z-10 relative">
+                                <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 animate-in fade-in slide-in-from-bottom-4 duration-700 drop-shadow-md">
                                     {slide.title}
                                 </h1>
-                                <p className="text-lg md:text-xl text-foreground/80 mb-8 max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
+                                <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100 drop-shadow-sm">
                                     {slide.subtitle}
                                 </p>
                                 <Link
                                     href={slide.link}
-                                    className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3 rounded-full text-lg font-medium hover:bg-primary/90 transition-all hover:scale-105 animate-in fade-in slide-in-from-bottom-12 duration-700 delay-200"
+                                    className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3 rounded-full text-lg font-medium hover:bg-primary/90 transition-all hover:scale-105 animate-in fade-in slide-in-from-bottom-12 duration-700 delay-200 shadow-lg"
                                 >
                                     {slide.buttonText}
                                     <ArrowRight className="h-5 w-5" />
                                 </Link>
                             </div>
-                            {/* Overlay Pattern (Optional) */}
-                            <div className="absolute inset-0 bg-[radial-gradient(#00000005_1px,transparent_1px)] [background-size:16px_16px]"></div>
                         </div>
                     ))}
                 </div>

@@ -4,14 +4,16 @@ import Link from "next/link";
 import Image from "next/image";
 import { Star, ShoppingCart } from "lucide-react";
 import { useStore } from "@/lib/store";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function ProductCard({ product }) {
     const addToCart = useStore((state) => state.addToCart);
 
     return (
-        <div className="group relative bg-white border border-border/50 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300">
+        <Card className="group overflow-hidden hover:shadow-lg transition-all duration-300">
             {/* Image Container */}
-            <div className="relative aspect-square overflow-hidden bg-gray-100">
+            <div className="relative aspect-square overflow-hidden bg-muted">
                 <Image
                     src={product.image}
                     alt={product.name}
@@ -19,12 +21,11 @@ export default function ProductCard({ product }) {
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
-                {/* Image Overlay (Optional) */}
                 <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
 
             {/* Content */}
-            <div className="p-4">
+            <CardContent className="p-4">
                 {/* Rating */}
                 <div className="flex items-center gap-1 mb-2">
                     {[...Array(5)].map((_, i) => (
@@ -56,15 +57,16 @@ export default function ProductCard({ product }) {
                     <span className="text-xl font-bold text-primary">
                         ₹{product.price.toFixed(2)}
                     </span>
-                    <button
+                    <Button
                         onClick={() => addToCart(product)}
-                        className="bg-primary text-primary-foreground px-5 py-2.5 rounded-full text-sm font-medium hover:bg-primary/90 transition-all shadow-sm hover:shadow-md flex items-center gap-2 hover:-translate-y-0.5 active:translate-y-0"
+                        size="sm"
+                        className="gap-2"
                     >
                         <ShoppingCart className="h-4 w-4" />
-                        Add to Cart
-                    </button>
+                        Add
+                    </Button>
                 </div>
-            </div>
-        </div>
+            </CardContent>
+        </Card>
     );
 }

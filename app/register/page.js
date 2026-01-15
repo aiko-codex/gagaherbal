@@ -4,6 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -25,18 +29,18 @@ export default function RegisterPage() {
         setError("");
 
         try {
-            const res = await fetch("/api/register", {
+            const response = await fetch("/api/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),
             });
 
-            if (!res.ok) {
-                const data = await res.json();
-                throw new Error(data.message || "Something went wrong");
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || "Registration failed");
             }
 
-            // Redirect to login page
             router.push("/login?success=true");
         } catch (err) {
             setError(err.message);
@@ -46,96 +50,74 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-stone-50 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-sm border">
-                <div className="text-center">
-                    <h2 className="font-serif text-3xl font-bold text-gray-900">
-                        Create Account
-                    </h2>
-                    <p className="mt-2 text-sm text-gray-600">
-                        Join the GagaHerbal community today
-                    </p>
-                </div>
-                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <div className="min-h-screen flex items-center justify-center bg-stone-50 py-12 px-4">
+            <Card className="w-full max-w-md">
+                <CardHeader className="text-center">
+                    <CardTitle className="font-serif text-3xl">Create Account</CardTitle>
+                    <CardDescription>Join our herbal wellness community</CardDescription>
+                </CardHeader>
+                <CardContent>
                     {error && (
-                        <div className="bg-red-50 text-red-500 text-sm p-3 rounded-md text-center">
+                        <div className="bg-red-50 text-red-500 text-sm p-3 rounded-md text-center mb-4">
                             {error}
                         </div>
                     )}
-                    <div className="rounded-md shadow-sm space-y-4">
-                        <div>
-                            <label htmlFor="name" className="sr-only">
-                                Full Name
-                            </label>
-                            <input
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="name">Full Name</Label>
+                            <Input
                                 id="name"
                                 name="name"
                                 type="text"
+                                placeholder="John Doe"
                                 required
-                                className="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                                placeholder="Full Name"
                                 value={formData.name}
                                 onChange={handleChange}
                             />
                         </div>
-                        <div>
-                            <label htmlFor="email-address" className="sr-only">
-                                Email address
-                            </label>
-                            <input
-                                id="email-address"
+                        <div className="space-y-2">
+                            <Label htmlFor="email">Email Address</Label>
+                            <Input
+                                id="email"
                                 name="email"
                                 type="email"
-                                autoComplete="email"
+                                placeholder="you@example.com"
                                 required
-                                className="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                                placeholder="Email address"
                                 value={formData.email}
                                 onChange={handleChange}
                             />
                         </div>
-                        <div>
-                            <label htmlFor="password" className="sr-only">
-                                Password
-                            </label>
-                            <input
+                        <div className="space-y-2">
+                            <Label htmlFor="password">Password</Label>
+                            <Input
                                 id="password"
                                 name="password"
                                 type="password"
-                                autoComplete="current-password"
+                                placeholder="••••••••"
                                 required
-                                className="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                                placeholder="Password"
+                                minLength={6}
                                 value={formData.password}
                                 onChange={handleChange}
                             />
                         </div>
-                    </div>
-
-                    <div>
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-full text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all disabled:opacity-70 disabled:cursor-not-allowed"
-                        >
+                        <Button type="submit" disabled={loading} className="w-full">
                             {loading ? (
                                 <Loader2 className="animate-spin h-5 w-5" />
                             ) : (
-                                "Sign Up"
+                                "Create Account"
                             )}
-                        </button>
-                    </div>
-                </form>
-                <div className="text-center text-sm">
-                    <span className="text-gray-500">Already have an account? </span>
-                    <Link
-                        href="/login"
-                        className="font-medium text-primary hover:text-primary/80"
-                    >
-                        Sign in
-                    </Link>
-                </div>
-            </div>
+                        </Button>
+                    </form>
+                </CardContent>
+                <CardFooter className="justify-center">
+                    <p className="text-sm text-muted-foreground">
+                        Already have an account?{" "}
+                        <Link href="/login" className="text-primary font-medium hover:underline">
+                            Sign in
+                        </Link>
+                    </p>
+                </CardFooter>
+            </Card>
         </div>
     );
 }

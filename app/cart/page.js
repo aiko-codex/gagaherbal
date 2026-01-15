@@ -2,15 +2,45 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Trash2, Plus, Minus, ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useState, useEffect } from "react";
+import { Trash2, Plus, Minus, ArrowRight, Loader2 } from "lucide-react";
 import { useStore } from "@/lib/store";
 
 export default function CartPage() {
     const { cart, removeFromCart, updateQuantity } = useStore();
+    const { data: session } = useSession(); // Get session
+    const router = useRouter();
+    const [isMounted, setIsMounted] = useState(false);
+    const [isCheckingOut, setIsCheckingOut] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
     const shipping = subtotal > 499 ? 0 : 50;
     const total = subtotal + shipping;
+
+    const handleCheckout = async () => {
+        setIsCheckingOut(true);
+        if (!session) {
+            router.push("/login?callbackUrl=/checkout"); // Redirect to login
+        } else {
+            router.push("/checkout");
+        }
+        // Keep spinner spinning while redirecting
+    };
+
+    if (!isMounted) {
+        return (
+            <div className="container mx-auto px-4 py-24 text-center">
+                <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
+                <p className="mt-4 text-muted-foreground">Loading your cart...</p>
+            </div>
+        );
+    }
 
     if (cart.length === 0) {
         return (
@@ -113,9 +143,22 @@ export default function CartPage() {
                             </div>
                         </div>
 
-                        <button className="w-full bg-primary text-primary-foreground py-3 rounded-full font-bold shadow-md hover:bg-primary/90 transition-all flex items-center justify-center gap-2">
-                            Proceed to Checkout
-                            <ArrowRight className="h-5 w-5" />
+                        <button
+                            onClick={handleCheckout}
+                            disabled={isCheckingOut}
+                            className="w-full bg-primary text-primary-foreground py-3 rounded-full font-bold shadow-md hover:bg-primary/90 transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                        >
+                            {isCheckingOut ? (
+                                <>
+                                    <Loader2 className="h-5 w-5 animate-spin" />
+                                    Processing...
+                                </>
+                            ) : (
+                                <>
+                                    Proceed to Checkout
+                                    <ArrowRight className="h-5 w-5" />
+                                </>
+                            )}
                         </button>
 
                         <p className="text-xs text-center text-muted-foreground mt-4">

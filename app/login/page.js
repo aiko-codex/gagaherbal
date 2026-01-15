@@ -5,6 +5,10 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { Loader2 } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 function LoginForm() {
     const router = useRouter();
@@ -39,7 +43,7 @@ function LoginForm() {
             }
 
             router.push("/");
-            router.refresh(); // Refresh to update session in header
+            router.refresh();
         } catch (err) {
             setError(err.message);
         } finally {
@@ -48,94 +52,72 @@ function LoginForm() {
     };
 
     return (
-        <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-sm border">
-            <div className="text-center">
-                <h2 className="font-serif text-3xl font-bold text-gray-900">
-                    Welcome Back
-                </h2>
-                <p className="mt-2 text-sm text-gray-600">
-                    Sign in to access your account
-                </p>
-            </div>
-
-            {successMessage && (
-                <div className="bg-green-50 text-green-600 text-sm p-3 rounded-md text-center">
-                    Account created successfully! Please sign in.
-                </div>
-            )}
-
-            <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <Card className="w-full max-w-md">
+            <CardHeader className="text-center">
+                <CardTitle className="font-serif text-3xl">Welcome Back</CardTitle>
+                <CardDescription>Sign in to access your account</CardDescription>
+            </CardHeader>
+            <CardContent>
+                {successMessage && (
+                    <div className="bg-green-50 text-green-600 text-sm p-3 rounded-md text-center mb-4">
+                        Account created successfully! Please sign in.
+                    </div>
+                )}
                 {error && (
-                    <div className="bg-red-50 text-red-500 text-sm p-3 rounded-md text-center">
+                    <div className="bg-red-50 text-red-500 text-sm p-3 rounded-md text-center mb-4">
                         {error}
                     </div>
                 )}
-                <div className="rounded-md shadow-sm space-y-4">
-                    <div>
-                        <label htmlFor="email-address" className="sr-only">
-                            Email address
-                        </label>
-                        <input
-                            id="email-address"
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="email">Email Address</Label>
+                        <Input
+                            id="email"
                             name="email"
                             type="email"
-                            autoComplete="email"
+                            placeholder="you@example.com"
                             required
-                            className="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                            placeholder="Email address"
                             value={formData.email}
                             onChange={handleChange}
                         />
                     </div>
-                    <div>
-                        <label htmlFor="password" className="sr-only">
-                            Password
-                        </label>
-                        <input
+                    <div className="space-y-2">
+                        <Label htmlFor="password">Password</Label>
+                        <Input
                             id="password"
                             name="password"
                             type="password"
-                            autoComplete="current-password"
+                            placeholder="••••••••"
                             required
-                            className="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                            placeholder="Password"
                             value={formData.password}
                             onChange={handleChange}
                         />
                     </div>
-                </div>
-
-                <div>
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-full text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all disabled:opacity-70 disabled:cursor-not-allowed"
-                    >
+                    <Button type="submit" disabled={loading} className="w-full">
                         {loading ? (
                             <Loader2 className="animate-spin h-5 w-5" />
                         ) : (
                             "Sign In"
                         )}
-                    </button>
-                </div>
-            </form>
-            <div className="text-center text-sm">
-                <span className="text-gray-500">Don't have an account? </span>
-                <Link
-                    href="/register"
-                    className="font-medium text-primary hover:text-primary/80"
-                >
-                    Sign up
-                </Link>
-            </div>
-        </div>
+                    </Button>
+                </form>
+            </CardContent>
+            <CardFooter className="justify-center">
+                <p className="text-sm text-muted-foreground">
+                    Don't have an account?{" "}
+                    <Link href="/register" className="text-primary font-medium hover:underline">
+                        Sign up
+                    </Link>
+                </p>
+            </CardFooter>
+        </Card>
     );
 }
 
 export default function LoginPage() {
     return (
-        <div className="min-h-screen flex items-center justify-center bg-stone-50 py-12 px-4 sm:px-6 lg:px-8">
-            <Suspense fallback={<div className="flex justify-center"><Loader2 className="animate-spin h-8 w-8 text-primary" /></div>}>
+        <div className="min-h-screen flex items-center justify-center bg-stone-50 py-12 px-4">
+            <Suspense fallback={<Loader2 className="animate-spin h-8 w-8 text-primary" />}>
                 <LoginForm />
             </Suspense>
         </div>

@@ -43,7 +43,7 @@ const FEATURED_PRODUCTS = [
         price: 15.00,
         rating: 5,
         reviews: 94,
-        image: "https://loremflickr.com/800/800/lavender,oil",
+        image: "https://loremflickr.com/800/800/lavender,Essential",
     },
 ];
 
