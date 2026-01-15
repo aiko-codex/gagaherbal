@@ -1,7 +1,6 @@
 import { Playfair_Display, Lato } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/providers";
-import AnnouncementBar from "@/components/ui/announcement-bar";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 
@@ -31,7 +30,6 @@ export default function RootLayout({ children }) {
       >
         <Providers>
           <div className="flex flex-col min-h-screen">
-            <AnnouncementBar />
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />

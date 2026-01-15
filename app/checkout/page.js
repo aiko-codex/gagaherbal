@@ -3,13 +3,20 @@
 import { useStore } from "@/lib/store";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
-import { Loader2, ArrowLeft, CheckCircle2 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import {
+    Loader2,
+    ArrowLeft,
+    CheckCircle,
+    User,
+    MapPin,
+    Phone,
+    Mail,
+    CreditCard,
+    Package,
+    ArrowRight,
+} from "lucide-react";
 
 export default function CheckoutPage() {
     const { cart, clearCart } = useStore();
@@ -75,150 +82,267 @@ export default function CheckoutPage() {
         }
     };
 
+    // Empty Cart State
     if (cart.length === 0 && !isSuccess) {
         return (
-            <div className="min-h-screen pt-24 pb-12 container mx-auto px-4 text-center">
-                <h1 className="font-serif text-3xl font-bold mb-4">Your cart is empty</h1>
+            <div className="min-h-screen flex flex-col items-center justify-center px-4">
+                <div className="w-24 h-24 rounded-full bg-muted/50 flex items-center justify-center mb-6">
+                    <Package size={40} className="text-muted-foreground/50" strokeWidth={1} />
+                </div>
+                <h1 className="font-serif text-2xl font-medium text-foreground mb-2">Your cart is empty</h1>
                 <p className="text-muted-foreground mb-8">Add some items before checking out.</p>
-                <Button asChild variant="outline">
-                    <Link href="/shop">Return to Shop</Link>
-                </Button>
+                <Link
+                    href="/shop"
+                    className="inline-flex items-center gap-2 px-8 py-3.5 bg-secondary/10 text-secondary rounded-full font-medium hover:bg-secondary/20 transition-colors"
+                >
+                    Return to Shop
+                </Link>
             </div>
         );
     }
 
+    // Success State
     if (isSuccess) {
         return (
-            <div className="min-h-screen pt-24 pb-12 container mx-auto px-4 flex flex-col items-center justify-center text-center">
-                <div className="bg-green-100 p-4 rounded-full mb-6">
-                    <CheckCircle2 className="h-16 w-16 text-green-600" />
+            <div className="min-h-screen flex flex-col items-center justify-center px-4 pt-32 pb-16">
+                <div className="w-24 h-24 rounded-full bg-secondary/10 flex items-center justify-center mb-8">
+                    <CheckCircle size={48} className="text-secondary" strokeWidth={1.5} />
                 </div>
-                <h1 className="font-serif text-4xl font-bold mb-4">Order Placed Successfully!</h1>
-                <p className="text-muted-foreground mb-8 max-w-md">
-                    Thank you for your purchase, {formData.firstName}. We have sent a confirmation email to {formData.email}.
+                <h1 className="font-serif text-3xl md:text-4xl font-medium text-foreground mb-3 text-center">
+                    Order Placed Successfully!
+                </h1>
+                <p className="text-muted-foreground text-center max-w-md mb-8">
+                    Thank you for your purchase, {formData.firstName}. We've sent a confirmation email to {formData.email}.
                 </p>
-                <div className="flex gap-4">
-                    <Button asChild variant="outline">
-                        <Link href="/shop">Continue Shopping</Link>
-                    </Button>
-                    <Button asChild>
-                        <Link href="/dashboard">View My Orders</Link>
-                    </Button>
+                <div className="flex flex-col sm:flex-row gap-4">
+                    <Link
+                        href="/shop"
+                        className="px-8 py-3.5 border border-border rounded-full font-medium hover:bg-muted/50 transition-colors text-center"
+                    >
+                        Continue Shopping
+                    </Link>
+                    <Link
+                        href="/orders"
+                        className="px-8 py-3.5 bg-foreground text-background rounded-full font-medium hover:bg-foreground/90 transition-colors text-center"
+                    >
+                        View My Orders
+                    </Link>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen pt-24 pb-12 bg-stone-50">
-            <div className="container mx-auto px-4">
-                <div className="mb-8">
-                    <Link href="/cart" className="flex items-center text-sm text-muted-foreground hover:text-primary transition-colors">
-                        <ArrowLeft className="h-4 w-4 mr-2" />
-                        Back to Cart
+        <div className="min-h-screen bg-background pt-40 pb-16">
+            <div className="container mx-auto px-4 md:px-6 max-w-5xl">
+                {/* Header */}
+                <div className="flex items-center gap-4 mb-10">
+                    <Link
+                        href="/cart"
+                        className="p-2 rounded-full hover:bg-muted transition-colors"
+                    >
+                        <ArrowLeft size={20} className="text-muted-foreground" />
                     </Link>
+                    <div>
+                        <h1 className="font-serif text-3xl font-medium text-foreground">Checkout</h1>
+                        <p className="text-muted-foreground">{cart.length} item{cart.length !== 1 ? 's' : ''}</p>
+                    </div>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
                     {/* Shipping Form */}
-                    <div className="lg:col-span-7">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="font-serif text-2xl">Shipping Details</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="lg:col-span-3">
+                        <form onSubmit={handleSubmit} className="space-y-8">
+                            {/* Contact Section */}
+                            <div className="bg-white rounded-2xl border border-border/30 p-6">
+                                <h2 className="font-serif text-xl font-medium mb-6 flex items-center gap-3">
+                                    <User size={20} className="text-secondary" />
+                                    Contact Information
+                                </h2>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium text-foreground">First Name</label>
+                                        <input
+                                            name="firstName"
+                                            required
+                                            value={formData.firstName}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-3.5 bg-muted/30 border border-border/50 rounded-xl focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/20 transition-all"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium text-foreground">Last Name</label>
+                                        <input
+                                            name="lastName"
+                                            required
+                                            value={formData.lastName}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-3.5 bg-muted/30 border border-border/50 rounded-xl focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/20 transition-all"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium text-foreground">Email</label>
+                                        <div className="relative">
+                                            <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                                            <input
+                                                name="email"
+                                                type="email"
+                                                required
+                                                value={formData.email}
+                                                onChange={handleChange}
+                                                className="w-full pl-12 pr-4 py-3.5 bg-muted/30 border border-border/50 rounded-xl focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/20 transition-all"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium text-foreground">Phone</label>
+                                        <div className="relative">
+                                            <Phone size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                                            <input
+                                                name="phone"
+                                                type="tel"
+                                                required
+                                                value={formData.phone}
+                                                onChange={handleChange}
+                                                className="w-full pl-12 pr-4 py-3.5 bg-muted/30 border border-border/50 rounded-xl focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/20 transition-all"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Shipping Section */}
+                            <div className="bg-white rounded-2xl border border-border/30 p-6">
+                                <h2 className="font-serif text-xl font-medium mb-6 flex items-center gap-3">
+                                    <MapPin size={20} className="text-secondary" />
+                                    Shipping Address
+                                </h2>
+                                <div className="space-y-4">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium text-foreground">Street Address</label>
+                                        <input
+                                            name="address"
+                                            required
+                                            placeholder="123 Nature Way"
+                                            value={formData.address}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-3.5 bg-muted/30 border border-border/50 rounded-xl focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/20 transition-all"
+                                        />
+                                    </div>
                                     <div className="grid grid-cols-2 gap-4">
                                         <div className="space-y-2">
-                                            <Label htmlFor="firstName">First Name</Label>
-                                            <Input id="firstName" name="firstName" required value={formData.firstName} onChange={handleChange} />
+                                            <label className="text-sm font-medium text-foreground">City</label>
+                                            <input
+                                                name="city"
+                                                required
+                                                value={formData.city}
+                                                onChange={handleChange}
+                                                className="w-full px-4 py-3.5 bg-muted/30 border border-border/50 rounded-xl focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/20 transition-all"
+                                            />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label htmlFor="lastName">Last Name</Label>
-                                            <Input id="lastName" name="lastName" required value={formData.lastName} onChange={handleChange} />
+                                            <label className="text-sm font-medium text-foreground">Postal Code</label>
+                                            <input
+                                                name="postalCode"
+                                                required
+                                                value={formData.postalCode}
+                                                onChange={handleChange}
+                                                className="w-full px-4 py-3.5 bg-muted/30 border border-border/50 rounded-xl focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/20 transition-all"
+                                            />
                                         </div>
                                     </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="email">Email Address</Label>
-                                        <Input id="email" name="email" type="email" required value={formData.email} onChange={handleChange} />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="address">Street Address</Label>
-                                        <Input id="address" name="address" required placeholder="123 Nature Way" value={formData.address} onChange={handleChange} />
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="space-y-2">
-                                            <Label htmlFor="city">City</Label>
-                                            <Input id="city" name="city" required value={formData.city} onChange={handleChange} />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label htmlFor="postalCode">Postal Code</Label>
-                                            <Input id="postalCode" name="postalCode" required value={formData.postalCode} onChange={handleChange} />
-                                        </div>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="phone">Phone Number</Label>
-                                        <Input id="phone" name="phone" type="tel" required value={formData.phone} onChange={handleChange} />
-                                    </div>
+                                </div>
+                            </div>
 
-                                    <div className="pt-6 border-t">
-                                        <h3 className="font-serif text-xl font-bold mb-4">Payment</h3>
-                                        <div className="bg-muted p-4 rounded-lg border flex items-center gap-3">
-                                            <div className="w-4 h-4 rounded-full bg-primary ring-2 ring-primary ring-offset-2"></div>
-                                            <span className="font-medium">Cash on Delivery (COD)</span>
-                                        </div>
-                                        <p className="text-sm text-muted-foreground mt-2">Pay securely when your order arrives.</p>
+                            {/* Payment Section */}
+                            <div className="bg-white rounded-2xl border border-border/30 p-6">
+                                <h2 className="font-serif text-xl font-medium mb-6 flex items-center gap-3">
+                                    <CreditCard size={20} className="text-secondary" />
+                                    Payment Method
+                                </h2>
+                                <div className="bg-secondary/5 border border-secondary/20 rounded-xl p-4 flex items-center gap-4">
+                                    <div className="w-5 h-5 rounded-full bg-secondary flex items-center justify-center">
+                                        <div className="w-2 h-2 rounded-full bg-white"></div>
                                     </div>
+                                    <div>
+                                        <p className="font-medium text-foreground">Cash on Delivery</p>
+                                        <p className="text-sm text-muted-foreground">Pay when your order arrives</p>
+                                    </div>
+                                </div>
+                            </div>
 
-                                    <Button type="submit" disabled={isProcessing} className="w-full" size="lg">
-                                        {isProcessing ? <><Loader2 className="animate-spin mr-2 h-5 w-5" /> Processing...</> : "Place Order"}
-                                    </Button>
-                                </form>
-                            </CardContent>
-                        </Card>
+                            {/* Submit Button */}
+                            <button
+                                type="submit"
+                                disabled={isProcessing}
+                                className="w-full flex items-center justify-center gap-2 py-4 bg-foreground text-background rounded-full font-medium hover:bg-foreground/90 transition-colors disabled:opacity-70"
+                            >
+                                {isProcessing ? (
+                                    <>
+                                        <Loader2 className="animate-spin h-5 w-5" />
+                                        Processing...
+                                    </>
+                                ) : (
+                                    <>
+                                        Place Order
+                                        <ArrowRight size={18} />
+                                    </>
+                                )}
+                            </button>
+                        </form>
                     </div>
 
                     {/* Order Summary */}
-                    <div className="lg:col-span-5">
-                        <Card className="sticky top-24">
-                            <CardHeader>
-                                <CardTitle className="font-serif text-2xl">Order Summary</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="space-y-4 max-h-72 overflow-y-auto pr-2 mb-6">
-                                    {cart.map((item) => (
-                                        <div key={item.id} className="flex gap-4 py-3 border-b last:border-0">
-                                            <div className="relative h-16 w-16 flex-shrink-0 bg-muted rounded-md overflow-hidden">
-                                                <img src={item.image || "https://loremflickr.com/320/240/herbal"} alt={item.name} className="h-full w-full object-cover" />
-                                                <Badge className="absolute -top-1 -right-1 text-[10px] h-5 w-5 p-0 flex items-center justify-center">
-                                                    {item.quantity}
-                                                </Badge>
-                                            </div>
-                                            <div className="flex-1">
-                                                <h4 className="font-medium line-clamp-1">{item.name}</h4>
-                                                <p className="text-sm text-muted-foreground">₹{item.price.toFixed(2)}</p>
-                                            </div>
-                                            <p className="font-bold">₹{(item.price * item.quantity).toFixed(2)}</p>
-                                        </div>
-                                    ))}
-                                </div>
+                    <div className="lg:col-span-2">
+                        <div className="bg-muted/30 rounded-2xl border border-border/30 p-6 sticky top-40">
+                            <h2 className="font-serif text-xl font-medium mb-6">Order Summary</h2>
 
-                                <div className="space-y-2 pt-4 border-t text-sm">
-                                    <div className="flex justify-between">
-                                        <span className="text-muted-foreground">Subtotal</span>
-                                        <span>₹{subtotal.toFixed(2)}</span>
+                            {/* Items */}
+                            <div className="space-y-4 max-h-64 overflow-y-auto mb-6">
+                                {cart.map((item) => (
+                                    <div key={item.id} className="flex gap-4">
+                                        <div className="relative w-16 h-16 bg-white rounded-xl overflow-hidden flex-shrink-0">
+                                            <Image
+                                                src={item.image}
+                                                alt={item.name}
+                                                fill
+                                                className="object-cover"
+                                            />
+                                            <span className="absolute -top-1 -right-1 w-5 h-5 bg-foreground text-background text-[10px] font-medium rounded-full flex items-center justify-center">
+                                                {item.quantity}
+                                            </span>
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <p className="font-medium text-foreground truncate">{item.name}</p>
+                                            <p className="text-sm text-muted-foreground">₹{item.price.toFixed(2)}</p>
+                                        </div>
+                                        <p className="font-medium text-foreground">
+                                            ₹{(item.price * item.quantity).toFixed(2)}
+                                        </p>
                                     </div>
-                                    <div className="flex justify-between">
-                                        <span className="text-muted-foreground">Shipping</span>
-                                        <span>{shipping === 0 ? "Free" : `₹${shipping.toFixed(2)}`}</span>
-                                    </div>
-                                    <div className="flex justify-between items-center text-lg font-bold text-primary pt-3 border-t">
-                                        <span>Total</span>
-                                        <span>₹{total.toFixed(2)}</span>
-                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Totals */}
+                            <div className="space-y-3 pt-4 border-t border-border/50">
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-muted-foreground">Subtotal</span>
+                                    <span className="font-medium">₹{subtotal.toFixed(2)}</span>
                                 </div>
-                            </CardContent>
-                        </Card>
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-muted-foreground">Shipping</span>
+                                    <span className={`font-medium ${shipping === 0 ? 'text-secondary' : ''}`}>
+                                        {shipping === 0 ? "Free" : `₹${shipping.toFixed(2)}`}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between pt-3 border-t border-border/50">
+                                    <span className="font-medium">Total</span>
+                                    <span className="font-serif text-2xl font-medium">₹{total.toFixed(2)}</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
