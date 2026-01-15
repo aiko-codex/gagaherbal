@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
     Facebook,
     Instagram,
@@ -61,8 +62,16 @@ export default function Footer() {
 
                         {/* Column 1: About Story */}
                         <div className="lg:col-span-1">
-                            <h3 className="font-serif text-xl font-medium mb-6">About</h3>
-                            <p className="text-white/80 leading-relaxed mb-6">
+                            <Link href="/" className="inline-block mb-6">
+                                <Image
+                                    src="/images/logo4.png"
+                                    alt="GagaHerbal"
+                                    width={160}
+                                    height={40}
+                                    className="h-20 w-auto"
+                                />
+                            </Link>
+                            <p className="text-white/80 leading-relaxed">
                                 At GagaHerbal, we believe in the healing power of nature.
                                 Every product is crafted with care using organic ingredients,
                                 because your wellness journey deserves nothing less.{" "}

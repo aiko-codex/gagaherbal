@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, ShoppingBag, User, X, ArrowRight, Leaf } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { useSession } from "next-auth/react";
@@ -69,10 +70,15 @@ export default function Header() {
                 <div className="container mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
                     {/* Logo (Left) */}
                     <div className="flex-shrink-0">
-                        <Link href="/" className="flex items-center">
-                            <span className="font-serif text-2xl md:text-3xl font-normal tracking-tight text-foreground">
-                                GagaHerbal
-                            </span>
+                        <Link href="/" className="flex items-center p-2">
+                            <Image
+                                src="/images/logo_h.png"
+                                alt="GagaHerbal"
+                                width={200}
+                                height={40}
+                                className="h-14 w-auto"
+                                priority
+                            />
                         </Link>
                     </div>
 

@@ -19,7 +19,7 @@ const lato = Lato({
 
 export const metadata = {
   title: "GagaHerbal",
-  description: "Premium Herbal Products",
+  description: "Premium Herbal Products - Organic Wellness & Ayurvedic Care",
 };
 
 export default function RootLayout({ children }) {
