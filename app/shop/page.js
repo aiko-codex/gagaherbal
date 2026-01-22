@@ -2,92 +2,17 @@
 
 import { useState } from "react";
 import ProductCard from "@/components/product/product-card";
+import { PRODUCTS, getProductCategories } from "@/lib/data";
 
-// Products with real images
-const ALL_PRODUCTS = [
-    {
-        id: 1,
-        name: "Calming Chamomile Tea",
-        slug: "calming-chamomile-tea",
-        description: "Relax after a long day with our premium organic chamomile flowers.",
-        price: 299,
-        category: "Tea",
-        image: "/images/products/chamomile-tea.png",
-    },
-    {
-        id: 2,
-        name: "Golden Turmeric Elixir",
-        slug: "golden-turmeric-elixir",
-        description: "A potent anti-inflammatory blend of turmeric, ginger, and black pepper.",
-        price: 549,
-        category: "Supplements",
-        image: "/images/products/turmeric-elixir.png",
-    },
-    {
-        id: 3,
-        name: "Organic Matcha Powder",
-        slug: "organic-matcha-powder",
-        description: "Ceremonial grade matcha sourced directly from Japan.",
-        price: 799,
-        category: "Tea",
-        image: "/images/products/matcha-powder.png",
-    },
-    {
-        id: 4,
-        name: "Lavender Essential Oil",
-        slug: "lavender-essential-oil",
-        description: "Pure distilled lavender oil for aromatherapy and skin care.",
-        price: 399,
-        category: "Oils",
-        image: "/images/products/lavender-oil.png",
-    },
-    {
-        id: 5,
-        name: "Ashwagandha Root Powder",
-        slug: "ashwagandha-root-powder",
-        description: "Ancient ayurvedic adaptogen for stress relief and energy.",
-        price: 449,
-        category: "Supplements",
-        image: "/images/products/ashwagandha-powder.png",
-    },
-    {
-        id: 6,
-        name: "Peppermint Oil",
-        slug: "peppermint-oil",
-        description: "Refreshing essential oil for focus and digestive health.",
-        price: 349,
-        category: "Oils",
-        image: "/images/products/peppermint-oil.png",
-    },
-    {
-        id: 7,
-        name: "Echinacea Immune Boost",
-        slug: "echinacea-immune-boost",
-        description: "Natural immune system support from organic echinacea.",
-        price: 599,
-        category: "Supplements",
-        image: "/images/products/echinacea-supplement.png",
-    },
-    {
-        id: 8,
-        name: "Green Tea Blend",
-        slug: "green-tea-blend",
-        description: "Antioxidant-rich green tea with hints of jasmine.",
-        price: 399,
-        category: "Tea",
-        image: "/images/products/green-tea-blend.png",
-    },
-];
-
-const CATEGORIES = ["All", "Tea", "Supplements", "Oils"];
+const CATEGORIES = getProductCategories();
 
 export default function Shop() {
     const [selectedCategory, setSelectedCategory] = useState("All");
 
     const filteredProducts =
         selectedCategory === "All"
-            ? ALL_PRODUCTS
-            : ALL_PRODUCTS.filter((p) => p.category === selectedCategory);
+            ? PRODUCTS
+            : PRODUCTS.filter((p) => p.category === selectedCategory);
 
     return (
         <div className="min-h-screen bg-background pt-40 pb-16">
@@ -109,8 +34,8 @@ export default function Shop() {
                             key={category}
                             onClick={() => setSelectedCategory(category)}
                             className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all ${selectedCategory === category
-                                    ? "bg-foreground text-background"
-                                    : "bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground"
+                                ? "bg-foreground text-background"
+                                : "bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground"
                                 }`}
                         >
                             {category}

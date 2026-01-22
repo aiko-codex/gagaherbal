@@ -52,12 +52,9 @@ export default function Header() {
     }, []);
 
     const navLinks = [
-        { name: "Our Blends", href: "/category/blends", description: "Discover our signature tea collection" },
-        { name: "Ritual & Wellness", href: "/blog", description: "Self-care guides and herbal wisdom" },
         { name: "Shop", href: "/shop", description: "Browse all products" },
-        { name: "Sustainability", href: "/about", description: "Our commitment to the planet" },
-        { name: "Journal", href: "/blog", description: "Stories and inspiration" },
-        { name: "About", href: "/about", description: "Our story and values" },
+        { name: "Our Story", href: "/our-story", description: "Our journey and values" },
+        { name: "Founders' Note", href: "/founders-note", description: "From a Mother & Daughter" },
     ];
 
     return (
@@ -72,7 +69,7 @@ export default function Header() {
                     <div className="flex-shrink-0">
                         <Link href="/" className="flex items-center p-2">
                             <Image
-                                src="/images/logo_h.png"
+                                src="/images/new_logo.png"
                                 alt="GagaHerbal"
                                 width={200}
                                 height={40}

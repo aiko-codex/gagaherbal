@@ -41,8 +41,9 @@ export default function Footer() {
     const customerCare = [
         { name: "My Account", href: "/profile" },
         { name: "Track Order", href: "/orders" },
-        { name: "Shipping Policy", href: "/shipping" },
-        { name: "Returns & Refunds", href: "/returns" },
+        { name: "Shipping Policy", href: "/shipping-policy" },
+        { name: "Returns & Refunds", href: "/return-policy" },
+        { name: "Cancellation Policy", href: "/refund-and-cancellation-policy" },
         { name: "FAQs", href: "/faqs" },
     ];
 
@@ -64,7 +65,7 @@ export default function Footer() {
                         <div className="lg:col-span-1">
                             <Link href="/" className="inline-block mb-6">
                                 <Image
-                                    src="/images/logo4.png"
+                                    src="/images/logodark.png"
                                     alt="GagaHerbal"
                                     width={160}
                                     height={40}
@@ -164,10 +165,10 @@ export default function Footer() {
                             © {new Date().getFullYear()} GagaHerbal. Crafted with 🌿
                         </p>
                         <div className="flex items-center gap-6 text-sm">
-                            <Link href="/privacy" className="text-white/60 hover:text-white transition-colors">
+                            <Link href="/privacy-policy" className="text-white/60 hover:text-white transition-colors">
                                 Privacy Policy
                             </Link>
-                            <Link href="/terms" className="text-white/60 hover:text-white transition-colors">
+                            <Link href="/terms-and-condition" className="text-white/60 hover:text-white transition-colors">
                                 Terms of Service
                             </Link>
                         </div>

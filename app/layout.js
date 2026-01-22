@@ -3,6 +3,7 @@ import "./globals.css";
 import Providers from "@/components/providers";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+import { SmoothScroll } from "@/components/lenis-scroll/SmoothScroll";
 
 const playfair = Playfair_Display({
   variable: "--font-serif",
@@ -29,11 +30,13 @@ export default function RootLayout({ children }) {
         className={`${playfair.variable} ${lato.variable} antialiased font-sans high-quality-text`}
       >
         <Providers>
-          <div className="flex flex-col min-h-screen">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
+          <SmoothScroll>
+            <div className="flex flex-col min-h-screen">
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+          </SmoothScroll>
         </Providers>
       </body>
     </html>

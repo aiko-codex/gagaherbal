@@ -3,41 +3,9 @@
 import ProductCard from "@/components/product/product-card";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { getFeaturedProducts } from "@/lib/data";
 
-const FEATURED_PRODUCTS = [
-    {
-        id: 1,
-        name: "Calming Chamomile Tea",
-        slug: "calming-chamomile-tea",
-        description: "Relax after a long day with our premium organic chamomile flowers.",
-        price: 299,
-        image: "/images/products/chamomile-tea.png",
-    },
-    {
-        id: 2,
-        name: "Golden Turmeric Elixir",
-        slug: "golden-turmeric-elixir",
-        description: "A potent anti-inflammatory blend of turmeric, ginger, and black pepper.",
-        price: 549,
-        image: "/images/products/turmeric-elixir.png",
-    },
-    {
-        id: 3,
-        name: "Organic Matcha Powder",
-        slug: "organic-matcha-powder",
-        description: "Ceremonial grade matcha sourced directly from Japan.",
-        price: 799,
-        image: "/images/products/matcha-powder.png",
-    },
-    {
-        id: 4,
-        name: "Lavender Essential Oil",
-        slug: "lavender-essential-oil",
-        description: "Pure distilled lavender oil for aromatherapy and skin care.",
-        price: 399,
-        image: "/images/products/lavender-oil.png",
-    },
-];
+const FEATURED_PRODUCTS = getFeaturedProducts();
 
 export default function FeaturedProducts() {
     return (
